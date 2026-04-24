@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard - ReuseMart</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --green: #27ae60;
+  --green-light: #2ecc71;
+  --green-dark: #1e8449;
+  --green-pale: #eafaf1;
+  --green-mid: #d5f5e3;
+  --blue: #3498db;
+  --blue-dark: #2c80b4;
+  --red: #e74c3c;
+  --orange: #f39c12;
+  --bg: #f4f8f6;
+  --text: #1a2e22;
+  --muted: #6b8f78;
+  --border: rgba(39,174,96,0.10);
+  --card-shadow: 0 8px 32px rgba(39,174,96,0.10);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--text); overflow-x: hidden; }
+
+/* NAVBAR */
+.navbar {
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(14px);
+  padding: 0 60px; height: 68px;
+  display: flex; justify-content: space-between; align-items: center;
+  position: sticky; top: 0; z-index: 200;
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 2px 24px rgba(39,174,96,0.07);
+}
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo-icon {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, var(--green), var(--green-light));
+  border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  font-size: 15px; font-weight: 700; color: white;
+  box-shadow: 0 4px 12px rgba(39,174,96,0.35);
+}
+.logo h2 { font-family: 'Playfair Display', serif; color: var(--green-dark); font-size: 22px; letter-spacing: -0.5px; }
+.nav-links { display: flex; align-items: center; gap: 6px; }
+.nav-links a { text-decoration: none; color: var(--muted); font-size: 14px; font-weight: 500; padding: 7px 16px; border-radius: 8px; transition: all 0.22s; }
+.nav-links a:hover { color: var(--green-dark); background: var(--green-pale); }
+.nav-links a.active { color: var(--green-dark); background: var(--green-pale); font-weight: 600; }
+.nav-links a.cta { background: var(--green); color: white; padding: 8px 20px; border-radius: 9px; box-shadow: 0 4px 14px rgba(39,174,96,0.30); }
+.nav-links a.cta:hover { background: var(--green-dark); transform: translateY(-1px); }
+
+
+/* LOGIN BAR */
+.login-bar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 14px 60px;
+}
+
+/* PREMIUM LOGIN BUTTON */
+.login-btn {
+  position: relative;
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+  color: white;
+  border: none;
+  padding: 11px 26px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+  letter-spacing: 0.3px;
+
+  /* Glass + Glow */
+  box-shadow: 0 6px 18px rgba(39,174,96,0.35);
+  transition: all 0.3s cubic-bezier(.22,.68,0,1.2);
+}
+
+/* SHINE EFFECT */
+.login-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.6), transparent);
+  transform: skewX(-20deg);
+}
+
+/* HOVER */
+.login-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 12px 30px rgba(39,174,96,0.5);
+}
+
+/* SHINE ANIMATION */
+.login-btn:hover::before {
+  animation: shine 0.8s forwards;
+}
+
+@keyframes shine {
+  100% {
+    left: 130%;
+  }
+}
+
+/* CLICK EFFECT */
+.login-btn:active {
+  transform: scale(0.96);
+}
+
+/* ICON STYLE */
+.login-icon {
+  font-size: 15px;
+  transition: transform 0.3s;
+}
+
+.login-btn:hover .login-icon {
+  transform: rotate(10deg) scale(1.2);
+}
+/* PAGE HEADER */
+.page-header {
+  background: linear-gradient(135deg, #0d3320 0%, #1e6b3c 55%, #27ae60 100%);
+  padding: 52px 60px 44px; position: relative; overflow: hidden;
+}
+.page-header-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(46,204,113,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(46,204,113,0.06) 1px, transparent 1px); background-size: 50px 50px; pointer-events: none; }
+.page-header-inner { position: relative; max-width: 560px; animation: fadeUp 0.7s cubic-bezier(.22,.68,0,1.2) both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+.page-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.20); padding: 5px 14px; border-radius: 100px; font-size: 12px; color: rgba(255,255,255,0.85); font-weight: 500; letter-spacing: 0.05em; margin-bottom: 14px; }
+.page-header h1 { font-family: 'Playfair Display', serif; font-size: clamp(28px, 4vw, 40px); color: white; letter-spacing: -0.5px; margin-bottom: 8px; }
+.page-header p { color: rgba(255,255,255,0.65); font-size: 15px; font-weight: 300; }
+
+/* WRAPPER */
+.wrapper { max-width: 1140px; margin: 0 auto; padding: 40px 60px 60px; }
+
+/* SECTION DIVIDER */
+.section-divider { padding: 32px 0 0; display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.section-divider-label { font-size: 11px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: var(--green); white-space: nowrap; }
+.section-divider-line { flex: 1; height: 1px; background: var(--green-mid); }
+
+/* SECTION CONTROLS */
+.section-controls {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; flex-wrap: wrap; margin-bottom: 18px;
+}
+.section-meta { font-size: 13px; color: var(--muted); font-weight: 500; }
+
+.controls-right { display: flex; align-items: center; gap: 10px; }
+
+.search-wrap { position: relative; }
+.search-wrap svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+.search-wrap input {
+  padding: 9px 12px 9px 34px; border-radius: 10px;
+  border: 1.5px solid rgba(39,174,96,0.18);
+  font-size: 13px; font-family: 'DM Sans', sans-serif;
+  color: var(--text); background: var(--bg); transition: border 0.2s; width: 210px;
+}
+.search-wrap input:focus { outline: none; border-color: var(--green); background: white; }
+.search-wrap input::placeholder { color: var(--muted); }
+
+/* TOTAL BOX */
+.total-box {
+  background: linear-gradient(135deg, var(--green-pale), var(--green-mid));
+  padding: 14px 20px; margin-bottom: 20px; border-radius: 12px;
+  border-left: 4px solid var(--green);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.total-label { font-size: 13px; color: var(--green-dark); font-weight: 500; }
+.total-amount { font-size: 22px; font-weight: 700; color: var(--green); font-family: 'Playfair Display', serif; }
+
+/* GRID */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 22px; }
+
+/* CARD */
+.card {
+  background: white; border-radius: 18px; overflow: hidden;
+  box-shadow: var(--card-shadow); border: 1px solid rgba(39,174,96,0.06);
+  transition: all 0.30s cubic-bezier(.22,.68,0,1.2);
+  animation: cardIn 0.5s ease both;
+}
+@keyframes cardIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(39,174,96,0.16); border-color: rgba(39,174,96,0.25); }
+
+.card-img-wrap { position: relative; overflow: hidden; height: 160px; }
+.card-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.40s ease; display: block; }
+.card:hover .card-img-wrap img { transform: scale(1.06); }
+
+.card-badge {
+  position: absolute; top: 10px; right: 10px;
+  background: rgba(255,255,255,0.92); backdrop-filter: blur(4px);
+  border-radius: 20px; padding: 3px 10px;
+  font-size: 11px; font-weight: 700; color: var(--green-dark);
+  border: 1px solid rgba(39,174,96,0.20);
+}
+
+.content { padding: 16px; }
+.content h4 { font-size: 14px; font-weight: 600; margin-bottom: 5px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.price { color: var(--green-dark); font-family: 'Playfair Display', serif; font-weight: 700; font-size: 17px; margin-bottom: 6px; }
+
+.meta { font-size: 12px; color: var(--muted); margin-bottom: 10px; display: flex; flex-direction: column; gap: 3px; }
+
+/* STATUS PILLS */
+.status-pill { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.03em; margin-bottom: 10px; }
+.green-pill  { background: #d1fae5; color: #065f46; }
+.orange-pill { background: #fef3c7; color: #92400e; }
+.red-pill    { background: #fee2e2; color: #991b1b; }
+
+/* BUTTONS */
+.btn-row { display: flex; gap: 6px; flex-wrap: wrap; }
+
+button {
+  padding: 8px 14px; border: none; border-radius: 9px; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600;
+  transition: all 0.22s; letter-spacing: 0.2px;
+}
+
+.btn-buy {
+  background: linear-gradient(135deg, var(--green), var(--green-light));
+  color: white; box-shadow: 0 3px 10px rgba(39,174,96,0.28);
+}
+.btn-buy:hover { box-shadow: 0 6px 18px rgba(39,174,96,0.40); transform: translateY(-1px); }
+
+.btn-remove { background: #fef2f2; color: var(--red); border: 1.5px solid #fecaca; }
+.btn-remove:hover { background: var(--red); color: white; }
+
+.btn-cancel { background: #fff8ec; color: var(--orange); border: 1.5px solid #fde68a; }
+.btn-cancel:hover { background: var(--orange); color: white; }
+
+.btn-clear {
+  background: var(--text); color: white; padding: 9px 18px; border-radius: 10px;
+  font-size: 13px;
+}
+.btn-clear:hover { background: #0d1f15; transform: translateY(-1px); }
+
+/* EMPTY */
+.empty { grid-column: 1 / -1; text-align: center; padding: 44px 20px; color: var(--muted); }
+.empty-label { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.empty-sub { font-size: 13px; }
+
+/* TOAST */
+.toast {
+  position: fixed; bottom: 30px; right: 30px;
+  background: var(--text); color: white;
+  padding: 14px 22px; border-radius: 12px;
+  font-size: 14px; font-weight: 500;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.22);
+  transform: translateY(80px); opacity: 0;
+  transition: all 0.35s cubic-bezier(.22,.68,0,1.2);
+  z-index: 999; display: flex; align-items: center; gap: 10px; max-width: 300px;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+.toast.red .toast-dot { background: var(--red); }
+.toast.orange .toast-dot { background: var(--orange); }
+
+@media (max-width: 768px) {
+  .navbar { padding: 0 20px; }
+  .page-header { padding: 40px 20px 34px; }
+  .wrapper { padding: 24px 20px 40px; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo">
+    
+    <h2>ReuseMart</h2>
+  </div>
+  <div class="nav-links">
+    <a href="home.html">Home</a>
+    <a href="materials.html">Buy</a>
+    <a href="rentitems.html">Rent</a>
+    <a href="listiteam.html">List Items</a>
+    
+    <a href="profile.html" class="cta active">Profile</a>
+  </div>
+</nav>
+
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-grid"></div>
+  <div class="page-header-inner">
+    <div class="page-tag">Dashboard</div>
+    <h1>My Dashboard</h1>
+    <p></p>
+  </div>
+</div>
+<div class="login-bar">
+  <button class="login-btn" onclick="window.location.href='http://127.0.0.1:5500/login.html'">
+    <span class="login-icon">👤</span>
+    Login
+  </button>
+</div>
+<div class="wrapper">
+
+  <!-- CART SECTION -->
+  <div class="section-divider">
+    <span class="section-divider-label">My Cart</span>
+    <div class="section-divider-line"></div>
+  </div>
+
+  <div class="section-controls">
+    <span class="section-meta" id="cartCount">0 items</span>
+    <div class="controls-right">
+      <div class="search-wrap">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="search" placeholder="Search items…" oninput="displayCart()">
+      </div>
+      <button class="btn-clear" onclick="clearCart()">Clear All</button>
+    </div>
+  </div>
+
+  <div class="total-box">
+    <span class="total-label">Cart Total</span>
+    <span class="total-amount">&#8377;<span id="total">0</span></span>
+  </div>
+
+  <div class="grid" id="cartList"></div>
+
+  <!-- RENTED SECTION -->
+  <div class="section-divider">
+    <span class="section-divider-label">Rented Items</span>
+    <div class="section-divider-line"></div>
+  </div>
+  <div class="section-controls">
+    <span class="section-meta" id="rentCount">0 active rentals</span>
+  </div>
+  <div class="grid" id="rentedList"></div>
+
+  <!-- PURCHASED SECTION -->
+  <div class="section-divider">
+    <span class="section-divider-label">Purchased Items</span>
+    <div class="section-divider-line"></div>
+  </div>
+  <div class="section-controls">
+    <span class="section-meta" id="buyCount">0 orders</span>
+  </div>
+  <div class="grid" id="boughtList"></div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div class="toast-dot"></div>
+  <span id="toastMsg">Done!</span>
+</div>
+
+<script>
+let cart   = JSON.parse(localStorage.getItem("cart"))   || [];
+let bought = JSON.parse(localStorage.getItem("bought")) || [];
+let rented = JSON.parse(localStorage.getItem("rented")) || [];
+
+/* TOAST */
+function showToast(msg, type = '') {
+  const t = document.getElementById("toast");
+  document.getElementById("toastMsg").innerText = msg;
+  t.className = 'toast' + (type ? ' ' + type : '');
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2200);
+}
+
+/* CART */
+function displayCart() {
+  const c      = document.getElementById("cartList");
+  const search = document.getElementById("search").value.toLowerCase();
+  c.innerHTML  = "";
+  let total    = 0;
+
+  const filtered = cart.filter(i => i.name.toLowerCase().includes(search));
+  document.getElementById("cartCount").innerText = filtered.length + " item" + (filtered.length !== 1 ? "s" : "");
+
+  if (filtered.length === 0) {
+    c.innerHTML = `<div class="empty"><div class="empty-label">Your cart is empty</div><div class="empty-sub">Browse the shop and add items.</div></div>`;
+    document.getElementById("total").innerText = "0";
+    return;
+  }
+
+  filtered.forEach((item, i) => {
+    const price = parseInt(String(item.price).replace(/[^0-9]/g, "")) || 0;
+    total += price;
+    c.innerHTML += `
+    <div class="card" style="animation-delay:${i * 0.06}s">
+      <div class="card-img-wrap">
+        <img src="${item.image}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/400x300/eafaf1/27ae60?text=No+Image'">
+        <span class="card-badge">In Cart</span>
+      </div>
+      <div class="content">
+        <h4>${item.name}</h4>
+        <p class="price">&#8377;${price.toLocaleString('en-IN')}</p>
+        <div class="btn-row">
+          <button class="btn-buy" onclick="buyItem(${i})">Buy Now</button>
+          <button class="btn-remove" onclick="removeItem(${i})">Remove</button>
+        </div>
+      </div>
+    </div>`;
+  });
+
+  document.getElementById("total").innerText = total.toLocaleString('en-IN');
+}
+
+/* RENTED */
+function displayRented() {
+  const c = document.getElementById("rentedList");
+  c.innerHTML = "";
+  document.getElementById("rentCount").innerText = rented.length + " active rental" + (rented.length !== 1 ? "s" : "");
+
+  if (rented.length === 0) {
+    c.innerHTML = `<div class="empty"><div class="empty-label">No rented items</div><div class="empty-sub">Items you rent will appear here.</div></div>`;
+    return;
+  }
+
+  rented.forEach((item, i) => {
+    const start     = new Date(item.date);
+    const now       = new Date();
+    const used      = Math.floor((now - start) / (1000 * 60 * 60 * 24));
+    const remaining = item.rentDays - used;
+
+    let statusText, pillClass;
+    if (remaining > 0) {
+      statusText = remaining + " day" + (remaining !== 1 ? "s" : "") + " remaining";
+      pillClass  = "green-pill";
+    } else if (remaining === 0) {
+      statusText = "Last day!";
+      pillClass  = "orange-pill";
+    } else {
+      statusText = "Overdue by " + Math.abs(remaining) + " days";
+      pillClass  = "red-pill";
+    }
+
+    c.innerHTML += `
+    <div class="card" style="animation-delay:${i * 0.06}s">
+      <div class="card-img-wrap">
+        <img src="${item.image}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/400x300/eafaf1/27ae60?text=No+Image'">
+        <span class="card-badge">Rented</span>
+      </div>
+      <div class="content">
+        <h4>${item.name}</h4>
+        <p class="price">&#8377;${item.price}/day</p>
+        <div class="meta">
+          <span>${item.rentDays} days &nbsp;&middot;&nbsp; Total: &#8377;${item.total}</span>
+        </div>
+        <span class="status-pill ${pillClass}">${statusText}</span>
+        <div class="btn-row">
+          <button class="btn-cancel" onclick="returnItem(${i})">Return Item</button>
+        </div>
+      </div>
+    </div>`;
+  });
+}
+
+/* PURCHASED */
+function displayBought() {
+  const c = document.getElementById("boughtList");
+  c.innerHTML = "";
+  document.getElementById("buyCount").innerText = bought.length + " order" + (bought.length !== 1 ? "s" : "");
+
+  if (bought.length === 0) {
+    c.innerHTML = `<div class="empty"><div class="empty-label">No purchases yet</div><div class="empty-sub">Items you buy will appear here.</div></div>`;
+    return;
+  }
+
+  bought.forEach((item, i) => {
+    const price = parseInt(String(item.price).replace(/[^0-9]/g, "")) || 0;
+    c.innerHTML += `
+    <div class="card" style="animation-delay:${i * 0.06}s">
+      <div class="card-img-wrap">
+        <img src="${item.image}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/400x300/eafaf1/27ae60?text=No+Image'">
+        <span class="card-badge">Purchased</span>
+      </div>
+      <div class="content">
+        <h4>${item.name}</h4>
+        <p class="price">&#8377;${price.toLocaleString('en-IN')}</p>
+        <div class="meta"><span>${item.date || ''}</span></div>
+        <div class="btn-row">
+          <button class="btn-cancel" onclick="cancelOrder(${i})">Cancel Order</button>
+        </div>
+      </div>
+    </div>`;
+  });
+}
+
+/* ACTIONS */
+function buyItem(i) {
+  const item = cart[i];
+  item.date = new Date().toLocaleString();
+  bought.push(item);
+  cart.splice(i, 1);
+  localStorage.setItem("cart",   JSON.stringify(cart));
+  localStorage.setItem("bought", JSON.stringify(bought));
+  showToast("Item purchased!");
+  displayCart(); displayBought();
+}
+
+function cancelOrder(i) {
+  const item = bought[i];
+  delete item.date;
+  cart.push(item);
+  bought.splice(i, 1);
+  localStorage.setItem("cart",   JSON.stringify(cart));
+  localStorage.setItem("bought", JSON.stringify(bought));
+  showToast("Order cancelled", "orange");
+  displayCart(); displayBought();
+}
+
+function removeItem(i) {
+  cart.splice(i, 1);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  showToast("Item removed", "red");
+  displayCart();
+}
+
+function clearCart() {
+  cart = [];
+  localStorage.setItem("cart", JSON.stringify(cart));
+  showToast("Cart cleared", "red");
+  displayCart();
+}
+
+function returnItem(i) {
+  rented.splice(i, 1);
+  localStorage.setItem("rented", JSON.stringify(rented));
+  showToast("Item returned");
+  displayRented();
+}
+
+/* INIT */
+displayCart();
+displayBought();
+displayRented();
+</script>
+
+</body>
+</html>
