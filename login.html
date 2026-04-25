@@ -101,6 +101,13 @@ button:hover {
 .hidden {
     display: none;
 }
+@media screen and (max-width: 600px) {
+  .container {
+    width: 100%;
+    display: block; /* Stacks elements */
+  }
+}
+
 </style>
 </head>
 
@@ -210,6 +217,7 @@ function login() {
     }
 }
 </script>
+<script src="login.js"></script>
 
 </body>
 </html>
