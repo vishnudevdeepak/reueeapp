@@ -59,7 +59,7 @@ body {
   z-index: 200;
   border-bottom: 1px solid rgba(255,255,255,0.30);
   box-shadow: 0 8px 32px rgba(0,0,0,0.05);
-  transition: padding 0.35s ease, background 0.35s ease, transform 0.35s ease;
+  transition: padding 0.35s ease, background 0.35s ease;
 }
 
 .navbar.shrink {
@@ -67,8 +67,6 @@ body {
   background: rgba(255,255,255,0.45);
   backdrop-filter: blur(18px);
 }
-
-.navbar.hide { transform: translateY(-100%); }
 
 .logo { display: flex; align-items: center; gap: 10px; }
 .logo h2 {
@@ -408,14 +406,10 @@ window.addEventListener('scroll', () => {
   progressBar.style.width = pct.toFixed(1) + '%';
 }, { passive: true });
 
-/* ── NAVBAR SCROLL BEHAVIOUR ── */
-let lastScroll = 0;
+/* ── NAVBAR SHRINK ON SCROLL (hide removed) ── */
 const navbar = document.getElementById('navbar');
 window.addEventListener('scroll', () => {
-  const current = window.scrollY;
-  navbar.classList.toggle('shrink', current > 50);
-  navbar.classList.toggle('hide', current > lastScroll && current > 80);
-  lastScroll = current;
+  navbar.classList.toggle('shrink', window.scrollY > 50);
 }, { passive: true });
 
 /* ── ITEMS ── */
