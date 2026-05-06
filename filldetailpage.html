@@ -24,6 +24,14 @@
 html { scroll-behavior: smooth; }
 body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--text); min-height: 100vh; overflow-x: hidden; }
 
+/* ── SCROLL PROGRESS ── */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+  background: linear-gradient(90deg, #27ae60, #2ecc71);
+  z-index: 9999; transition: width 0.05s linear;
+  box-shadow: 0 0 8px rgba(39,174,96,0.6);
+}
+
 /* ── NAVBAR ── */
 .navbar {
   background: rgba(255,255,255,0.88); backdrop-filter: blur(14px);
@@ -63,7 +71,6 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--t
 .page-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.20); padding: 5px 14px; border-radius: 100px; font-size: 12px; color: rgba(255,255,255,0.85); font-weight: 500; letter-spacing: 0.05em; margin-bottom: 14px; }
 .page-header h1 { font-family: 'Playfair Display', serif; font-size: clamp(26px,4vw,38px); color: white; letter-spacing: -0.5px; margin-bottom: 6px; }
 .page-header p { color: rgba(255,255,255,0.60); font-size: 15px; font-weight: 300; }
-
 @keyframes fadeUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
 
 /* ── LAYOUT ── */
@@ -80,7 +87,6 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--t
   overflow: hidden;
   animation: fadeUp 0.65s cubic-bezier(.22,.68,0,1.2) 0.2s both;
 }
-
 .form-section-header {
   display: flex; align-items: center; gap: 12px;
   padding: 20px 28px 16px;
@@ -94,21 +100,16 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--t
 .form-section-icon svg { width: 18px; height: 18px; stroke: var(--green-dark); fill: none; stroke-width: 2; }
 .form-section-title { font-size: 15px; font-weight: 700; color: var(--text); }
 .form-section-sub { font-size: 12px; color: var(--muted); font-weight: 400; }
-
 .form-body { padding: 24px 28px; }
-
 .field-group { display: grid; gap: 18px; }
 .field-row-2 { grid-template-columns: 1fr 1fr; }
-
 .field { display: flex; flex-direction: column; gap: 6px; }
 .field label { font-size: 12px; font-weight: 600; color: var(--green-dark); letter-spacing: 0.04em; text-transform: uppercase; }
-
 .field input, .field select, .field textarea {
   padding: 11px 14px; border-radius: 11px;
   border: 1.5px solid rgba(39,174,96,0.18);
   font-size: 14px; font-family: 'DM Sans', sans-serif; color: var(--text);
-  background: var(--bg); transition: border 0.22s, box-shadow 0.22s, background 0.2s;
-  outline: none;
+  background: var(--bg); transition: border 0.22s, box-shadow 0.22s, background 0.2s; outline: none;
 }
 .field input:focus, .field select:focus, .field textarea:focus {
   border-color: var(--green); background: white;
@@ -118,11 +119,8 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--t
 .field input.error { border-color: var(--red); box-shadow: 0 0 0 3px rgba(231,76,60,0.08); }
 .field-error { font-size: 11px; color: var(--red); font-weight: 500; display: none; }
 .field-error.show { display: block; }
-
 .field textarea { resize: vertical; min-height: 80px; }
 .field select { cursor: pointer; }
-
-/* section separator inside form */
 .form-separator { height: 1px; background: rgba(39,174,96,0.08); margin: 6px 0; }
 
 /* ── ORDER SUMMARY ── */
@@ -137,21 +135,48 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--t
   font-family: 'Playfair Display', serif; font-size: 17px; color: var(--text);
 }
 .summary-item {
-  display: flex; align-items: center; gap: 14px; padding: 16px 24px;
+  display: flex; align-items: flex-start; gap: 14px; padding: 16px 24px;
   border-bottom: 1px solid rgba(39,174,96,0.07);
 }
 .summary-img { width: 56px; height: 56px; border-radius: 10px; object-fit: cover; flex-shrink: 0; background: var(--green-pale); }
-.summary-info h5 { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; line-height: 1.3; }
-.summary-info .summary-price { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--green); font-weight: 700; }
+.summary-info { flex: 1; min-width: 0; }
+.summary-info h5 { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+.summary-info .unit-price { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+
+/* ── QUANTITY CONTROL ── */
+.qty-row {
+  display: flex; align-items: center; gap: 0;
+  background: var(--bg); border: 1.5px solid rgba(39,174,96,0.20);
+  border-radius: 10px; overflow: hidden; width: fit-content;
+}
+.qty-btn {
+  width: 34px; height: 34px; border: none; background: transparent;
+  cursor: pointer; font-size: 18px; font-weight: 600; color: var(--green-dark);
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.18s, color 0.18s;
+  font-family: 'DM Sans', sans-serif; flex-shrink: 0;
+}
+.qty-btn:hover { background: var(--green-pale); color: var(--green); }
+.qty-btn:active { background: var(--green-mid); }
+.qty-display {
+  min-width: 38px; text-align: center; font-size: 15px; font-weight: 700;
+  color: var(--text); border-left: 1px solid rgba(39,174,96,0.15);
+  border-right: 1px solid rgba(39,174,96,0.15); padding: 0 6px;
+  line-height: 34px; user-select: none;
+}
+.qty-label { font-size: 11px; font-weight: 600; color: var(--green-dark); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+
+.line-price {
+  font-family: 'Playfair Display', serif; font-size: 15px;
+  color: var(--green); font-weight: 700; margin-top: 10px;
+}
 
 .summary-rows { padding: 14px 24px; display: flex; flex-direction: column; gap: 9px; }
 .summary-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); }
 .summary-row.total { font-size: 16px; font-weight: 700; color: var(--text); border-top: 1px solid rgba(39,174,96,0.12); padding-top: 12px; margin-top: 4px; }
 .summary-row.total span:last-child { color: var(--green); font-family: 'Playfair Display', serif; font-size: 18px; }
 
-.empty-checkout {
-  padding: 32px 24px; text-align: center; color: var(--muted);
-}
+.empty-checkout { padding: 32px 24px; text-align: center; color: var(--muted); }
 .empty-checkout p { font-size: 14px; margin-bottom: 14px; }
 .empty-checkout a { color: var(--green); font-weight: 600; text-decoration: none; }
 
@@ -229,6 +254,8 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--t
 </style>
 </head>
 <body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
 
 <!-- NAVBAR -->
 <nav class="navbar">
@@ -356,9 +383,7 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--t
   <div class="summary-card">
     <div class="summary-header">Order Summary</div>
 
-    <div id="summaryItem">
-      <!-- Populated by JS -->
-    </div>
+    <div id="summaryItem"><!-- Populated by JS --></div>
 
     <div class="summary-rows" id="summaryRows" style="display:none;">
       <div class="summary-row"><span>Subtotal</span><span id="subTotal">₹0</span></div>
@@ -399,9 +424,28 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--t
 </div>
 
 <script>
+/* ── STATE ── */
+let quantity = 1;
+let unitPrice = 0;
+
 /* ── LOAD ITEM FROM LOCALSTORAGE ── */
 const checkoutItem  = JSON.parse(localStorage.getItem("checkoutItem"))  || null;
 const checkoutIndex = parseInt(localStorage.getItem("checkoutItemIndex") ?? "-1");
+
+function updateTotals() {
+  const total = unitPrice * quantity;
+  document.getElementById("subTotal").textContent   = "₹" + total.toLocaleString('en-IN');
+  document.getElementById("grandTotal").textContent  = "₹" + total.toLocaleString('en-IN');
+  const lp = document.getElementById("linePrice");
+  if (lp) lp.textContent = "₹" + total.toLocaleString('en-IN');
+  const qd = document.getElementById("qtyDisplay");
+  if (qd) qd.textContent = quantity;
+}
+
+function changeQty(delta) {
+  quantity = Math.max(1, quantity + delta);
+  updateTotals();
+}
 
 function loadSummary() {
   const si = document.getElementById("summaryItem");
@@ -414,7 +458,7 @@ function loadSummary() {
     return;
   }
 
-  const price = parseInt(String(checkoutItem.price).replace(/[^0-9]/g, "")) || 0;
+  unitPrice = parseInt(String(checkoutItem.price).replace(/[^0-9]/g, "")) || 0;
 
   si.innerHTML = `
     <div class="summary-item">
@@ -422,18 +466,24 @@ function loadSummary() {
            onerror="this.src='https://via.placeholder.com/100x100/eafaf1/27ae60?text=Item'">
       <div class="summary-info">
         <h5>${checkoutItem.name}</h5>
-        <div class="summary-price">₹${price.toLocaleString('en-IN')}</div>
+        <div class="unit-price">Unit price: ₹${unitPrice.toLocaleString('en-IN')}</div>
+        <div class="qty-label">Quantity</div>
+        <div class="qty-row">
+          <button class="qty-btn" onclick="changeQty(-1)" title="Decrease">−</button>
+          <div class="qty-display" id="qtyDisplay">1</div>
+          <button class="qty-btn" onclick="changeQty(1)" title="Increase">+</button>
+        </div>
+        <div class="line-price" id="linePrice">₹${unitPrice.toLocaleString('en-IN')}</div>
       </div>
     </div>`;
 
-  document.getElementById("subTotal").textContent  = "₹" + price.toLocaleString('en-IN');
-  document.getElementById("grandTotal").textContent = "₹" + price.toLocaleString('en-IN');
   sr.style.display = "flex";
+  updateTotals();
 }
 
 /* ── VALIDATION ── */
 function showErr(id, show) {
-  const el = document.getElementById("err-" + id);
+  const el  = document.getElementById("err-" + id);
   const inp = document.getElementById(id);
   if (!el || !inp) return;
   el.classList.toggle("show", show);
@@ -444,52 +494,42 @@ function showErr(id, show) {
 function validate() {
   let ok = true;
   const req = x => x.value.trim() === "";
-
   const fields = ["firstName","lastName","email","phone","street","city","state","pin"];
-  fields.forEach(f => { const bad = req(document.getElementById(f)); showErr(f, bad); if(bad) ok=false; });
-
-  // email format
+  fields.forEach(f => { const bad = req(document.getElementById(f)); showErr(f, bad); if (bad) ok = false; });
   const email = document.getElementById("email");
   if (!email.value.includes("@")) { showErr("email", true); ok = false; }
-
-  // pin 6 digits
   const pin = document.getElementById("pin");
   if (!/^\d{6}$/.test(pin.value.trim())) { showErr("pin", true); ok = false; }
-
   return ok;
 }
 
 /* ── CONFIRM ORDER ── */
 function confirmOrder() {
-  if (!checkoutItem) {
-    showToast("No item selected!");
-    return;
-  }
-  if (!validate()) {
-    showToast("Please fill in all required fields.");
-    return;
-  }
+  if (!checkoutItem) { showToast("No item selected!"); return; }
+  if (!validate()) { showToast("Please fill in all required fields."); return; }
 
-  // Move item from cart → bought
   let cart   = JSON.parse(localStorage.getItem("cart"))   || [];
   let bought = JSON.parse(localStorage.getItem("bought")) || [];
 
-  checkoutItem.date = new Date().toLocaleString();
-  bought.push(checkoutItem);
+  const orderItem = {
+    ...checkoutItem,
+    quantity,
+    totalPrice: unitPrice * quantity,
+    date: new Date().toLocaleString()
+  };
+
+  bought.push(orderItem);
   if (checkoutIndex >= 0) cart.splice(checkoutIndex, 1);
 
-  localStorage.setItem("cart", JSON.stringify(cart));
+  localStorage.setItem("cart",   JSON.stringify(cart));
   localStorage.setItem("bought", JSON.stringify(bought));
   localStorage.removeItem("checkoutItem");
   localStorage.removeItem("checkoutItemIndex");
 
-  // Show success overlay
   document.getElementById("successOverlay").classList.add("show");
 }
 
-function goToProfile() {
-  window.location.href = "profile.html";
-}
+function goToProfile() { window.location.href = "profile.html"; }
 
 /* ── TOAST ── */
 function showToast(msg) {
@@ -499,14 +539,20 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove("show"), 2400);
 }
 
-/* ── PRE-FILL LOGGED-IN USER ── */
+/* ── PRE-FILL ── */
 function prefill() {
   const user = localStorage.getItem("loggedInUser");
-  if (user) {
-    const fn = document.getElementById("firstName");
-    if (fn && !fn.value) fn.value = user;
-  }
+  if (user) { const fn = document.getElementById("firstName"); if (fn && !fn.value) fn.value = user; }
 }
+
+/* ── SCROLL PROGRESS ── */
+const progressBar = document.getElementById('scrollProgress');
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY;
+  const docH    = document.documentElement.scrollHeight - window.innerHeight;
+  const pct     = docH > 0 ? (scrollY / docH) * 100 : 0;
+  progressBar.style.width = pct.toFixed(1) + '%';
+}, { passive: true });
 
 /* INIT */
 loadSummary();

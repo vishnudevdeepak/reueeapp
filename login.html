@@ -8,6 +8,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, #27ae60, #2ecc71);
+  z-index: 9999;
+  transition: width 0.05s linear;
+  box-shadow: 0 0 8px rgba(39, 174, 96, 0.6);
+}
 * {
     margin: 0;
     padding: 0;
@@ -34,6 +45,22 @@ body {
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     text-align: center;
 }
+/* ── SCROLL PROGRESS ── */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+  background: linear-gradient(90deg, var(--green), var(--green-light));
+  z-index: 9999; transition: width 0.05s linear;
+  box-shadow: 0 0 8px rgba(39,174,96,0.6);
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: linear-gradient(135deg, #d4f5e9, #f4f8f6);
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text);
+  overflow-x: hidden;
+}
+
 
 /* Headings */
 h2 {

@@ -7,6 +7,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
+  .scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, #27ae60, #2ecc71);
+  z-index: 9999;
+  transition: width 0.05s linear;
+  box-shadow: 0 0 8px rgba(39, 174, 96, 0.6);
+}
 :root {
   --green: #27ae60;
   --green-light: #2ecc71;
@@ -403,7 +414,7 @@ body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--t
 </style>
 </head>
 <body>
-
+<div class="scroll-progress" id="scrollProgress"></div>
 <!-- NAVBAR -->
 <nav class="navbar" id="navbar">
   <div class="logo"><h2>ReuseMart</h2></div>
@@ -1266,5 +1277,13 @@ function showToast(msg) {
 /* INIT */
 updateListingCount();
 </script>
+<script>const progressBar = document.getElementById('scrollProgress');
+
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY;
+  const docH    = document.documentElement.scrollHeight - window.innerHeight;
+  const pct     = docH > 0 ? (scrollY / docH) * 100 : 0;
+  progressBar.style.width = pct.toFixed(1) + '%';
+}, { passive: true });</script>
 </body>
 </html>
